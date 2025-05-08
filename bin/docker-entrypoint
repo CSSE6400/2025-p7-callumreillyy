@@ -4,6 +4,7 @@ set -e
 
 # If there is more than one argument then return the help
 if [ $# -gt 1 ]; then
+    echo "Error: Unknown command '$1'"
     echo "Usage: docker-entrypoint [COMMAND]"
     echo "  COMMAND: The command to run. If not specified, the default command is used."
     exit 1
@@ -15,3 +16,14 @@ if [ $# -eq 0 ] || [ "$1" = "serve" ]; then
 
     exec poetry run gunicorn --bind 0.0.0.0:6400 'todo:create_app()'
 fi
+
+# If the first argument is worker then run the Celery worker
+if [ "$1" = "worker" ]; then
+    poetry run python3 bin/wait_for_db.py
+
+    exec poetry run celery --app todo.tasks.ical worker --loglevel=info
+fi
+
+# If the command is not recognized, print an error
+echo "Error: Unknown command '$1'"
+exit 1

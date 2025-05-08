@@ -1,0 +1,18 @@
+@baseUrl = http://taskoverflow-809615316.us-east-1.elb.amazonaws.com
+
+@task_id = 760d0112-11d2-452c-9d0b-69e9253a7331
+
+### Health
+GET {{baseUrl}}/api/v1/health
+
+### create async cal gen job
+POST {{baseUrl}}/api/v1/todos/ical 
+Accept: application/json
+
+### get status of generation job
+GET {{baseUrl}}/api/v1/todos/ical/{{task_id}}/status 
+Accept: application/json
+
+### get result of generation job
+GET {{baseUrl}}/api/v1/todos/ical/{{task_id}}/result 
+Accept: application/json
