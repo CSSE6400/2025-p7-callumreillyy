@@ -12,21 +12,21 @@ celery.conf.task_default_queue = os.environ.get("CELERY_DEFAULT_QUEUE", "ical")
  
 @celery.task(name="ical") 
 def create_ical(tasks): 
-   return "Hello World"
-   # cal = icalendar.Calendar() 
-   # cal.add("prodid", "-//Taskoverflow Calendar//mxm.dk//") 
-   # cal.add("version", "2.0") 
+   # return "Hello World"
+   cal = icalendar.Calendar() 
+   cal.add("prodid", "-//Taskoverflow Calendar//mxm.dk//") 
+   cal.add("version", "2.0") 
  
-   # time.sleep(50) 
+   time.sleep(50) 
  
-   # for task in tasks: 
-   #    event = icalendar.Event() 
+   for task in tasks: 
+      event = icalendar.Event() 
  
-   #    event.add("uid", task["id"]) 
-   #    event.add("summary", task["title"]) 
-   #    event.add("description", task["description"]) 
-   #    event.add("dtstart", datetime.datetime.strptime(task["deadline_at"], "%Y-%m-%dT%H:%M:%S")) 
+      event.add("uid", task["id"]) 
+      event.add("summary", task["title"]) 
+      event.add("description", task["description"]) 
+      event.add("dtstart", datetime.datetime.strptime(task["deadline_at"], "%Y-%m-%dT%H:%M:%S")) 
  
-   #    cal.add_component(event) 
+      cal.add_component(event) 
  
-   #    return cal.to_ical().decode("utf-8")
+   return cal.to_ical().decode("utf-8")
